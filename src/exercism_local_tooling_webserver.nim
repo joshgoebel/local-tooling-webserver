@@ -4,6 +4,7 @@ import osproc
 import strformat
 import json
 import uuids
+import system/ansi_c
 
 const NimblePkgVersion {.strdefine}: string = "unknown"
 
@@ -45,6 +46,14 @@ router routes:
         response["result"] = % readFile(fmt"{output_dir}/{results_filepath}")
 
     resp response
+
+type SignalHandler = proc (sign: cint) {.noconv.}
+
+# proc signalHandler(sign: cint) {.exportc: "signalHandler", noconv.} =
+proc signalHandler(sign: cint) =
+  quit 0
+
+c_signal(SIGTERM, cast[SignalHandler](signalHandler))
 
 proc main() =
   let port = Port(4567)
