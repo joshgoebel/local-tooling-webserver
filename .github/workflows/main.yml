@@ -20,6 +20,7 @@ jobs:
       - run: sudo apt-get install musl-dev musl-tools
       - run: musl-gcc -v
       - run: nimble build --passL='-static' --gcc.exe=musl-gcc --gcc.linkerexe=musl-gcc
+      - run: ls
       # - name: Tag Repo
       #   uses: richardsimko/update-tag@master
       #   with:

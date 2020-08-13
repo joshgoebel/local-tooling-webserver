@@ -7,7 +7,7 @@ license       = "MIT"
 srcDir        = "src"
 bin           = @["exercism_local_tooling_webserver"]
 
-backend       = "cpp"
+backend       = "c"
 
 # Dependencies
 
