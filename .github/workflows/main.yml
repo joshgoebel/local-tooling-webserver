@@ -1,0 +1,29 @@
+name: A workflow for my Hello World file
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Hello world action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./action-a
+      - name: Tag Repo
+        uses: richardsimko/update-tag@master
+        with:
+          tag_name: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: exercism_local_tooling_webserver
+          asset_name: exercism_local_tooling_webserver
+          # tag: ${{ github.ref }}
+          tag: latest
+          overwrite: true
+          body: "This is my release text"
