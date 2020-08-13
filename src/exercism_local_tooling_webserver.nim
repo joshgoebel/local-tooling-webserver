@@ -5,15 +5,19 @@ import strformat
 import json
 import uuids
 
-routes:
+const NimblePkgVersion {.strdefine}: string = "unknown"
+
+echo fmt"Exercism Local Tooling Webhook v{NimblePkgVersion}"
+
+router routes:
   post "/":
       # Uniq ID for this job
     let job_id = $(genUUID())
 
     # # Create dirs
     let job_dir = fmt"/tmp/jobs/{job_id}"
-    let input_dir = fmt"{job_dir}/input"
-    let output_dir = fmt"{job_dir}/output"
+    let input_dir = fmt"{job_dir}/input/"
+    let output_dir = fmt"{job_dir}/output/"
     os.createDir(input_dir)
     os.createDir(output_dir)
 
@@ -41,3 +45,11 @@ routes:
         response["result"] = % readFile(fmt"{output_dir}/{results_filepath}")
 
     resp response
+
+proc main() =
+  let port = Port(4567)
+  let settings = newSettings(port=port)
+  var jester = initJester(routes, settings=settings)
+  jester.serve()
+
+main()
