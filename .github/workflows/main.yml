@@ -16,6 +16,7 @@ jobs:
         with:
           nim-version: '1.2.6'
       - run: nimble install -d -Y
+      - run: nimble c
       - run: nimble c --passL='-static' --gcc.exe=musl-gcc --gcc.linkerexe=musl-gcc
       # - name: Tag Repo
       #   uses: richardsimko/update-tag@master
