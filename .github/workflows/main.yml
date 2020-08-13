@@ -10,13 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./action-a
-      - name: Tag Repo
-        uses: richardsimko/update-tag@master
+      # - uses: ./action-a
+      - uses: jiro4989/setup-nim-action@v1
         with:
-          tag_name: latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          nim-version: '1.2.6'
+      - run: nimble install -d -Y
+      - run: nimble c --passL='-static' --gcc.exe=musl-gcc --gcc.linkerexe=musl-gcc
+      # - name: Tag Repo
+      #   uses: richardsimko/update-tag@master
+      #   with:
+      #     tag_name: latest
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
