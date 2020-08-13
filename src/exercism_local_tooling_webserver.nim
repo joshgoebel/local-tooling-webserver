@@ -10,7 +10,7 @@ const NimblePkgVersion {.strdefine}: string = "unknown"
 echo fmt"Exercism Local Tooling Webhook v{NimblePkgVersion}"
 
 router routes:
-  post "/":
+  post "/job":
       # Uniq ID for this job
     let job_id = $(genUUID())
 
