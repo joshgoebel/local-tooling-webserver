@@ -6,6 +6,8 @@ import json
 import uuids
 import system/ansi_c
 
+type SignalHandler = proc (sign: cint) {.noconv.}
+
 const NimblePkgVersion {.strdefine}: string = "unknown"
 
 echo fmt"Exercism Local Tooling Webhook v{NimblePkgVersion}"
@@ -47,15 +49,12 @@ router routes:
 
     resp response
 
-type SignalHandler = proc (sign: cint) {.noconv.}
-
-# proc signalHandler(sign: cint) {.exportc: "signalHandler", noconv.} =
-proc signalHandler(sign: cint) =
+proc sigTermHandler(sign: cint) =
   quit 0
 
-c_signal(SIGTERM, cast[SignalHandler](signalHandler))
-
 proc main() =
+  c_signal(SIGTERM, cast[SignalHandler](sigTermHandler))
+
   let port = Port(4567)
   let settings = newSettings(port=port)
   var jester = initJester(routes, settings=settings)
