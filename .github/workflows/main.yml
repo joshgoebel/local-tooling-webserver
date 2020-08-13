@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - nim_wrapper
 
 jobs:
   build:
